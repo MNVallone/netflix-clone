@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../../components/Navbar';
+import MovieSlider from '../../components/MovieSlider';
 import { Link } from 'react-router-dom';
 import {Play, Info} from "lucide-react";
 import useGetTrendingContent from "../../hooks/getTrendingContent";
-import { ORIGINAL_IMG_BASE_URL } from '../../utils/constants';
+import { MOVIE_CATEGORIES, ORIGINAL_IMG_BASE_URL, TV_CATEGORIES } from '../../utils/constants';
+import { useContentStore } from '../../store/content';
 
 const HomeScreen = () => {
 
   const {trendingContent} = useGetTrendingContent();
-  console.log("trendingContent: ", trendingContent);
+  const {contentType} = useContentStore();
+  const [imgLoading, SetImgLoading] = useState(true)
 
   if (!trendingContent){
     return (
@@ -21,10 +24,15 @@ const HomeScreen = () => {
   }
 
   return (
- <section className='relative h-screen text-white'>
+<>
+  <section className='relative h-screen text-white'>
   <Navbar />
 
-  <img src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path} alt='Hero img' className='absolute top-0 left-0 w-full h-full object-cover -z-50'/>
+  {imgLoading && ( <div className='absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center
+      -z-10 shimmer' />)}
+
+  <img src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path} alt='Hero img' className='absolute top-0 left-0 w-full h-full object-cover -z-50'
+  onLoad={() => {SetImgLoading(false)}}/>
  
  <div className='absolute top-0 left-0 w-full h-full bg-black/50 -z-50' aria-hidden='true' />
 
@@ -58,8 +66,13 @@ const HomeScreen = () => {
  
  </div>
 
- </section>
-  )
+  </section>
+  <section className='flex flex-col gap-10 bg-black py-10'>
+    {contentType === "movie" ? MOVIE_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)
+    : TV_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)}
+  </section>
+</>
+);
 }
 
 export default HomeScreen
