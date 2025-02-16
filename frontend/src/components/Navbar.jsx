@@ -49,10 +49,10 @@ const Navbar = () => {
 
             {isMobileOpenUp && (
              <div className='w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800'>
-                <Link to={"/"} className='block hover:underline p-2' onClick={toggleMobileMenu}>
+                <Link to={"/"} className='block hover:underline p-2' onClick={toggleMobileMenu && (() => setContentType("movie"))}>
                 Movies
                 </Link>
-                <Link to={"/"} className='block hover:underline p-2' onClick={toggleMobileMenu}>
+                <Link to={"/"} className='block hover:underline p-2' onClick={toggleMobileMenu && (() => setContentType("tv"))}>
                 Tv Shows
                 </Link>
                 <Link to={"/history"} className='block hover:underline p-2' onClick={toggleMobileMenu}>
