@@ -32,7 +32,6 @@ const SearchPage = () => {
 				toast.error("An error occurred, please try again later");
 			}
         }
-        console.log("results: ", results)
     }
 
   return (
